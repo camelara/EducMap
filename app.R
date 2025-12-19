@@ -145,11 +145,11 @@ Matriz <- Inversiones_raw %>%
 #   + Se agrega ggthemes::Blue (paletteer)
 # ==========================================================
 custom_palettes <- list(
-  "Standar"= c("#EAEDF5", "#49525E", "#111E60"),
+  "Standar"= c("#EAEDF5", "#49525E", "#111E60")
  # "Blue 1" = c("#9EC9D9", "#1F74B1", "#26456E"),
  # "Blue 2" = c("#A0C4F1", "#0067A7", "#00467D"),
-  #"Black diverging" = c("#6F6F6F", "#434343", "#1E1E1E"),
-  "Reds"   = c("#DE9FD2", "#AB3F6A", "#7D0112")
+ #"Black diverging" = c("#6F6F6F", "#434343", "#1E1E1E"),
+ # "Reds"   = c("#DE9FD2", "#AB3F6A", "#7D0112")
 )
 
 make_custom_palette <- function(name, n, reverse = FALSE){
@@ -291,12 +291,13 @@ heatmap_server <- function(id, turismo_df){
       }
       
       list(
-        z = z,
-        x = item_levels,
-        y = cat_levels,
+        z = t(z),              # <-- TRANSPOSE
+        x = cat_levels,        # <-- Categoria ahora en X
+        y = item_levels,       # <-- Item ahora en Y
         ztitle = ztitle,
         zmax = max(z, na.rm = TRUE)
       )
+      
     })
     
     rv <- reactiveValues(last_plot = NULL)
@@ -317,7 +318,7 @@ heatmap_server <- function(id, turismo_df){
         colorscale = cs_blue,
         zmin = 0,
         zmax = hd$zmax,
-        hovertemplate = "<b>Tipo:</b> %{y}<br><b>Habilidad:</b> %{x}<br><b>Valor:</b> %{z}<extra></extra>"
+        hovertemplate = "<b>Categoría:</b> %{x}<br><b>Habilidad:</b> %{y}<br><b>Departamentos:</b> %{z}<extra></extra>"
       ) %>%
         layout(
           xaxis = list(title = "", tickangle = -90, automargin = TRUE),
@@ -418,10 +419,10 @@ ui <- fluidPage(
                  selectInput("sector", "Sectores", choices = NULL, multiple = TRUE),
                  
                  hr(),
-                 h4("Color del mapa"),
+                 h4("Intensidad del color en el mapa:"),
                  sliderInput(
                    "mix_color",
-                   "Mezcla: Empresas operando ↔ Inversión",
+                   "Empresas operando ↔ Inversión",
                    min = 0, max = 100, value = 0, step = 5
                  ),
                  helpText("0 = solo Empresas operando; 100 = solo Inversión; valores intermedios = combinación ponderada."),
@@ -462,8 +463,15 @@ ui <- fluidPage(
     ),
     
     tabPanel("Heatmap",
+             tags$div(
+               style = "padding:12px 6px 6px 6px;",
+               tags$h3("Habilidades demandadas en sector Turismo",
+                       style = "margin:0; font-weight:700; text-align:center;")
+             ),
              heatmap_ui("hm")
     )
+    
+    
   )
 )
 
