@@ -203,10 +203,10 @@ heatmap_ui <- function(id){
     div(class = "panel",
         div(class = "filters",
             selectInput(ns("cat"), "Categoría", choices = NULL, multiple = TRUE),
-            selectInput(ns("dep"), "Departamento", choices = NULL, multiple = TRUE),
-            sliderInput(ns("top_items"), "Máx. Items", min = 20, max = 300, value = 80, step = 10),
-            checkboxInput(ns("orden_por_frecuencia"), "Ordenar Items por frecuencia", TRUE),
-            checkboxInput(ns("escala_log"), "Escala log (log10(1+n))", FALSE)
+            selectInput(ns("dep"), "Departamento", choices = NULL, multiple = TRUE) ,
+            #sliderInput(ns("top_items"), "Máx. Items", min = 20, max = 300, value = 80, step = 10),
+            checkboxInput(ns("orden_por_frecuencia"), "Ordenar Items por frecuencia", TRUE) #,
+            #checkboxInput(ns("escala_log"), "Escala log (log10(1+n))", FALSE)
         )
     ),
     br(),
@@ -323,9 +323,29 @@ heatmap_server <- function(id, turismo_df){
         hovertemplate = "<b>Categoría:</b> %{x}<br><b>Habilidad:</b> %{y}<br><b>Departamentos:</b> %{z}<extra></extra>"
       ) %>%
         layout(
-          xaxis = list(title = "", tickangle = -90, automargin = TRUE),
-          yaxis = list(title = "", automargin = TRUE),
-          margin = list(l = 170, r = 30, t = 10, b = 230)
+          title = list(
+            text = paste0(
+              "<b>Mapa de habilidades requeridas</b><br>",
+              "<span style='font-size:13px;color:#666;'>",
+              "(Intensidad del color indica mayor demanda en Departamentos)",
+              "</span>"
+            ),
+            x = 0.5,
+            xanchor = "center",
+            yanchor = "top"
+          ),
+          xaxis = list(
+            title = "",
+            tickfont = list(size = 12),  # ⬅️ tamaño etiquetas eje X
+            tickangle = -45
+          ),
+          
+          # -------- EJE Y (Items) --------
+          yaxis = list(
+            title = "",
+            tickfont = list(size = 13)   # ⬅️ tamaño etiquetas eje Y
+          ),
+          margin = list(l = 200, r = 40, t = 80, b = 40)
         )
       
       rv$last_plot <- p
@@ -388,7 +408,7 @@ ui <- fluidPage(
       margin-bottom:10px;border:1px solid #eee;background:#fff;width:100%;
       display:flex;flex-direction:column;justify-content:center;min-height:72px;
     }
-    .value-title{font-size:12px;color:#666;margin-bottom:4px;}
+    .value-title{font-size:14px;color:#666;margin-bottom:4px;}
     .value-number{font-size:22px;font-weight:700;}
     .kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:8px;}
     @media (max-width:1100px){.kpi-row{grid-template-columns:repeat(2,1fr);} }
