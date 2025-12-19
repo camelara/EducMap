@@ -146,9 +146,9 @@ Matriz <- Inversiones_raw %>%
 # ==========================================================
 custom_palettes <- list(
   "Standar"= c("#EAEDF5", "#49525E", "#111E60"),
-  "Blue 1" = c("#9EC9D9", "#1F74B1", "#26456E"),
-  "Blue 2" = c("#A0C4F1", "#0067A7", "#00467D"),
-  "Black diverging" = c("#6F6F6F", "#434343", "#1E1E1E"),
+ # "Blue 1" = c("#9EC9D9", "#1F74B1", "#26456E"),
+ # "Blue 2" = c("#A0C4F1", "#0067A7", "#00467D"),
+  #"Black diverging" = c("#6F6F6F", "#434343", "#1E1E1E"),
   "Reds"   = c("#DE9FD2", "#AB3F6A", "#7D0112")
 )
 
@@ -246,32 +246,26 @@ heatmap_server <- function(id, turismo_df){
       df
     })
     
+    # ---- Preparación robusta: construir matriz z ----
     heat_data <- reactive({
       df <- base_filtrada()
-      if (nrow(df) == 0) return(NULL)
+      validate(need(nrow(df) > 0, "Sin registros para los filtros seleccionados."))
       
       ctab <- df %>% count(Categoria, Item, name = "n")
       
-      top_items <- ctab %>%
+      top_items_tbl <- ctab %>%
         group_by(Item) %>%
-        summarise(total = sum(n), .groups = "drop")
+        summarise(total = sum(n), .groups = "drop") %>%
+        arrange(desc(total), Item)
       
-      items_keep <- if (isTRUE(input$orden_por_frecuencia)) {
-        top_items %>%
-          arrange(desc(total), Item) %>%
-          slice_head(n = input$top_items) %>%
-          pull(Item)
-      } else {
-        top_items %>%
-          arrange(Item) %>%
-          slice_head(n = input$top_items) %>%
-          pull(Item)
-      }
+      n_keep <- min(input$top_items, nrow(top_items_tbl))
+      items_keep <- top_items_tbl %>% slice_head(n = n_keep) %>% pull(Item)
       
       ctab <- ctab %>% filter(Item %in% items_keep)
       
+      cat_levels <- sort(unique(ctab$Categoria))
       item_levels <- if (isTRUE(input$orden_por_frecuencia)) {
-        top_items %>%
+        top_items_tbl %>%
           filter(Item %in% items_keep) %>%
           arrange(desc(total), Item) %>%
           pull(Item)
@@ -279,38 +273,36 @@ heatmap_server <- function(id, turismo_df){
         sort(items_keep)
       }
       
-      cat_levels <- sort(unique(ctab$Categoria))
-      
       mat <- ctab %>%
         mutate(
           Categoria = factor(Categoria, levels = cat_levels),
           Item      = factor(Item, levels = item_levels)
         ) %>%
-        complete(Categoria, Item, fill = list(n = 0)) %>%
+        tidyr::complete(Categoria, Item, fill = list(n = 0)) %>%
         arrange(Categoria, Item)
       
+      z <- matrix(mat$n, nrow = length(cat_levels), byrow = FALSE)
+      
       if (isTRUE(input$escala_log)) {
-        mat <- mat %>% mutate(z = log10(1 + n))
-        list(mat = mat, z_col = "z", zmax = max(mat$z, na.rm = TRUE))
+        z <- log10(1 + z)
+        ztitle <- "log10(1+n)"
       } else {
-        list(mat = mat, z_col = "n", zmax = max(mat$n, na.rm = TRUE))
+        ztitle <- "n"
       }
+      
+      list(
+        z = z,
+        x = item_levels,
+        y = cat_levels,
+        ztitle = ztitle,
+        zmax = max(z, na.rm = TRUE)
+      )
     })
     
     rv <- reactiveValues(last_plot = NULL)
     
     output$heatmap <- renderPlotly({
-      hd <- heat_data()
-      if (is.null(hd)) {
-        p <- plotly_empty(type = "heatmap") %>%
-          layout(title = list(text = "Sin registros para los filtros seleccionados"))
-        rv$last_plot <- p
-        return(p)
-      }
-      
-      mat  <- hd$mat
-      zcol <- hd$z_col
-      z_vals <- mat[[zcol]]
+      hd <- heat_data()  # ya valida si no hay datos
       
       pal_blue <- as.character(paletteer::paletteer_c("ggthemes::Blue", 30))
       cs_blue  <- Map(function(i, col) list(i, col),
@@ -318,20 +310,14 @@ heatmap_server <- function(id, turismo_df){
                       pal_blue)
       
       p <- plot_ly(
-        data = mat,
-        x = ~Item,
-        y = ~Categoria,
-        z = z_vals,
+        x = hd$x,
+        y = hd$y,
+        z = hd$z,
         type = "heatmap",
         colorscale = cs_blue,
         zmin = 0,
         zmax = hd$zmax,
-        hovertemplate = paste(
-          "<b>Tipo:</b> %{y}<br>",
-          "<b>Habilidad:</b> %{x}<br>",
-          if (zcol == "n") "<b>Conteo:</b> %{z}<extra></extra>"
-          else "<b>Valor:</b> %{z:.3f}<extra></extra>"
-        )
+        hovertemplate = "<b>Tipo:</b> %{y}<br><b>Habilidad:</b> %{x}<br><b>Valor:</b> %{z}<extra></extra>"
       ) %>%
         layout(
           xaxis = list(title = "", tickangle = -90, automargin = TRUE),
@@ -410,7 +396,7 @@ ui <- fluidPage(
     style = "display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;width:100%;",
     tags$img(src = "LogoMINEC.png", height = "60px", style = "margin-left:10px;"),
     tags$div(style = "flex:1; text-align:center;",
-             tags$h2("MAPA INTEGRADO: EMPRESAS E INVERSIONES", style="margin:0;font-weight:700;")
+             tags$h2("Mapa de Actividad Empresarial e Inversión para la Planificación Educativa", style="margin:0;font-weight:700;")
     ),
     tags$div(style="width:80px;")
   ),
@@ -458,13 +444,13 @@ ui <- fluidPage(
                mainPanel(
                  div(class = "kpi-row",
                      div(class="value-card", style="background-color:#EAEDF5; color:black;",
-                         div(class="value-title","Empresas operando (total)"),
+                         div(class="value-title","Empresas operando (2022)"),
                          div(class="value-number", textOutput("kpi_emp_operando"))),
                      div(class="value-card", style="background-color:#EAEDF5; color:black;",
-                         div(class="value-title","Inversión (millones USD, total)"),
+                         div(class="value-title","Inversión anunciada (millones USD, 2023-2026)"),
                          div(class="value-number", textOutput("kpi_inversion"))),
                      div(class="value-card", style="background-color:#EAEDF5; color:black;",
-                         div(class="value-title","Empresas invirtiendo (total)"),
+                         div(class="value-title","Empresas con anuncio de inversión (2023-2026)"),
                          div(class="value-number", textOutput("kpi_emp_invirtiendo")))
                  ),
                  leafletOutput("mapa", height = "650px", width="100%"),
@@ -772,7 +758,7 @@ server <- function(input, output, session){
            <strong>Empleos previstos:</strong> %s<br/>
            <strong>Proyectos:</strong> %s<br/><br/>
 
-           <strong>Sectores con mayor inversión:</strong><br/>%s",
+           <strong>Sectores con mayor inversión anunciada:</strong><br/>%s",
           df$Departamento %||% "-",
           df$Municipio %||% "-",
           df$Distrito %||% "-",
@@ -798,7 +784,7 @@ server <- function(input, output, session){
            <strong>Empleos previstos:</strong> %s<br/>
            <strong>Proyectos:</strong> %s<br/><br/>
 
-           <strong>Sectores con mayor inversión:</strong><br/>%s",
+           <strong>Sectores con mayor inversión anunciada:</strong><br/>%s",
           df$Departamento %||% "-",
           comma(df$Empresas_operando %||% 0),
           df$TopSectoresEmp %||% "-",

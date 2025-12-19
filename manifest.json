@@ -4455,8 +4455,11 @@
     ".RData": {
       "checksum": "fc166eb4aa2b35a8a15905bff8d5baf7"
     },
+    ".RDataTmp": {
+      "checksum": "51fe6eadf0d8e54cd561d3e895f61f2c"
+    },
     ".tmp.driveupload/189156": {
-      "checksum": "c84644bd8250d31046c959dac76e565b"
+      "checksum": "b7d7cdabbec8449de216ff1f59314395"
     },
     ".tmp.driveupload/189190": {
       "checksum": "3591649708ea8893e4e1289a70191443"
@@ -4564,7 +4567,7 @@
       "checksum": "c2d2533ebab741a981acad5030260f8d"
     },
     ".tmp.driveupload/189386": {
-      "checksum": "a448149d6da3423271b2fffbbe626252"
+      "checksum": "826ed241be543c3b933c8404985c4e82"
     },
     ".tmp.driveupload/189416": {
       "checksum": "973b523cd2f655c6f59efdf7cf3c55a5"
@@ -7258,16 +7261,19 @@
       "checksum": "4c41f68c0aeb561d73e4c5bb62ac4ca4"
     },
     ".tmp.driveupload/215452": {
-      "checksum": "1efe9f017703c55cd80a15a2deccb983"
+      "checksum": "3446c1ebeec01d9deb2ce3d29ae7a348"
     },
     ".tmp.driveupload/215460": {
-      "checksum": "150a25f48d27758e533fe65593cf5bcb"
+      "checksum": "442bda77f63069dcf4285c22955ed4cc"
     },
     ".tmp.driveupload/215537": {
       "checksum": "aec2e5e1d1eb37bcf97d2e4628ccfbf9"
     },
     ".tmp.driveupload/215575": {
       "checksum": "777be16a5c825fb3c259f9644710a9b5"
+    },
+    ".tmp.driveupload/215617": {
+      "checksum": "e92f36006528f7a64dafa13a6c73471e"
     },
     ".tmp.driveupload/215621": {
       "checksum": "f2dee3dd46334514fd0fc1714ecc4db7"
@@ -8833,10 +8839,10 @@
       "checksum": "75589287973d2772c2fc69d664e10822"
     },
     ".tmp.driveupload/217124": {
-      "checksum": "bcf06a1a13302c9f4f32c381b9598e92"
+      "checksum": "97d444615a2fac9198098b731584d92a"
     },
     ".tmp.driveupload/217126": {
-      "checksum": "940a0dd6e4443c6af9a56738efcae66f"
+      "checksum": "ff25da9a567f7ec6f85bffdeabe37fba"
     },
     ".tmp.driveupload/217132": {
       "checksum": "95a01a7c204d6f54887c628e9888a8f2"
@@ -8893,22 +8899,22 @@
       "checksum": "bcbc57dd68fb624611362084c48df86b"
     },
     ".tmp.driveupload/217206": {
-      "checksum": "d14c39ad765166df8bc4cb238d7a8739"
+      "checksum": "2d5970bd256c199cb65dd5bf3dde3ba6"
     },
     ".tmp.driveupload/217208": {
-      "checksum": "8cb3366d890d208b8c65ad699c202d3a"
+      "checksum": "134f43ee17b97bad361ed615eb93262e"
     },
     ".tmp.driveupload/217210": {
       "checksum": "87eb42449b3e8279009eab9b2cd7cf42"
     },
     ".tmp.driveupload/217212": {
-      "checksum": "53a74af53ed620852c8bb869a9d5e0c6"
+      "checksum": "b98f84ace6a114d85fc9648e8388f976"
     },
     ".tmp.driveupload/217218": {
-      "checksum": "53a74af53ed620852c8bb869a9d5e0c6"
+      "checksum": "b98f84ace6a114d85fc9648e8388f976"
     },
     ".tmp.driveupload/217224": {
-      "checksum": "a15a10589e087d8e3cba44b12086b352"
+      "checksum": "2d2f1bc082d543e0be294f1d502df263"
     },
     ".tmp.driveupload/217228": {
       "checksum": "9f9f41f60730df0ecfbf36d04791c7ad"
@@ -8917,7 +8923,7 @@
       "checksum": "785157f6697d33317764b940f218450f"
     },
     ".tmp.driveupload/217238": {
-      "checksum": "ebf43e680578a0c09e306d3dd3cc5573"
+      "checksum": "3bb8544c5050c54770e5616eb4dab02c"
     },
     ".tmp.driveupload/217240": {
       "checksum": "a6480d8c1cb8cfc9a3001d0e3c1ad3b7"
@@ -8953,10 +8959,10 @@
       "checksum": "ea4dde48856b54604d2ab60c0b391684"
     },
     ".tmp.driveupload/217274": {
-      "checksum": "785157f6697d33317764b940f218450f"
+      "checksum": "3ff8023514d40c584d745634d78473e9"
     },
     ".tmp.driveupload/217276": {
-      "checksum": "9a515257e9ee41420fd12f736f2d39da"
+      "checksum": "79b11020ff5d662abb2ebfbc80fa2ae9"
     },
     ".tmp.driveupload/217282": {
       "checksum": "4f80d406c38771cd39b45b277496d665"
@@ -8984,6 +8990,45 @@
     },
     ".tmp.driveupload/217302": {
       "checksum": "d6c23032e9c13f38651704fe977a8716"
+    },
+    ".tmp.driveupload/217310": {
+      "checksum": "96e59726c3c7dc60ce1cef35bb66a8ab"
+    },
+    ".tmp.driveupload/217312": {
+      "checksum": "96e59726c3c7dc60ce1cef35bb66a8ab"
+    },
+    ".tmp.driveupload/217316": {
+      "checksum": "80202282f329c2ff1b85267e8ed5dff6"
+    },
+    ".tmp.driveupload/217318": {
+      "checksum": "9c387afea35359809630ff67342a1698"
+    },
+    ".tmp.driveupload/217322": {
+      "checksum": "fbdc4407484f6a6bf2d0975b59f2cb84"
+    },
+    ".tmp.driveupload/217326": {
+      "checksum": "1ee326f0bb99be614132bf138e1ab318"
+    },
+    ".tmp.driveupload/217330": {
+      "checksum": "51fe6eadf0d8e54cd561d3e895f61f2c"
+    },
+    ".tmp.driveupload/217334": {
+      "checksum": "44edff6ef490976ad4334f0313200cb3"
+    },
+    ".tmp.driveupload/217336": {
+      "checksum": "e0d8f49be72c8d4787b2711563faa325"
+    },
+    ".tmp.driveupload/217340": {
+      "checksum": "9c14075481ee8087eeabacb4252f01fd"
+    },
+    ".tmp.driveupload/217342": {
+      "checksum": "9497e2b000ce6f64b2e60c00fd87672f"
+    },
+    ".tmp.driveupload/217346": {
+      "checksum": "a70eaf9d9aedbfccc7aa54ecb680c107"
+    },
+    ".tmp.driveupload/217350": {
+      "checksum": "c783b4dcd26a00c59e6c1d64b136cc61"
     },
     "App1/app.R": {
       "checksum": "78a7211493397b6d2812a0fd5271d7bb"
@@ -9037,7 +9082,7 @@
       "checksum": "4e5c360c3fd1ce76d82075ceea1370fd"
     },
     "EducMap/app.R": {
-      "checksum": "150a25f48d27758e533fe65593cf5bcb"
+      "checksum": "442bda77f63069dcf4285c22955ed4cc"
     },
     "EducMap/DeptoGeom.rds": {
       "checksum": "fb8b4e5676dbb41fda68f775a1873f9d"
@@ -9073,7 +9118,7 @@
       "checksum": "511110e42668f7d3288fcff797064f99"
     },
     "EducMap/Matriz de Inversiones.xlsx": {
-      "checksum": "94774760380c3c3f504e5b1f40f45d10"
+      "checksum": "e92f36006528f7a64dafa13a6c73471e"
     },
     "EducMap/Necesidades turismo.xlsx": {
       "checksum": "18c71ce58bb9e7b7950f2c2e1d35d8a7"
@@ -9083,6 +9128,12 @@
     },
     "EducMap/SOLVENCIAS 2022 DEPTMUN.xlsx": {
       "checksum": "78eb48629a2326b6fd98de3bc77f9624"
+    },
+    "EducMap/www/desktop.ini": {
+      "checksum": "9ad2e454cfcfe6768a61be6e3ee094f9"
+    },
+    "EducMap/www/LogoMINEC.png": {
+      "checksum": "1ee326f0bb99be614132bf138e1ab318"
     },
     "Escalas de color.jpeg": {
       "checksum": "fd8d719b1466efb492eb5191f8fd4812"
