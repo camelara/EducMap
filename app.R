@@ -426,9 +426,9 @@ ui <- fluidPage(
                               choices = c("Distritos","Departamentos"),
                               selected = "Distritos", inline = TRUE),
                  
-                 selectInput("anio", "Año", choices = NULL, multiple = TRUE),
+                # selectInput("anio", "Año", choices = NULL, multiple = TRUE),
                  selectInput("dep", "Departamento", choices = NULL, multiple = TRUE),
-                 selectInput("mun", "Municipio", choices = NULL, multiple = TRUE),
+                # selectInput("mun", "Municipio", choices = NULL, multiple = TRUE),
                  selectInput("sector", "Sectores", choices = NULL, multiple = TRUE),
                  
                  hr(),
