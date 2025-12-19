@@ -5,7 +5,7 @@ account: camelara
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16337986
-bundleId: 11347109
+bundleId: 11347526
 url: https://camelara.shinyapps.io/EducMap/
 version: 1
 asMultiple: FALSE

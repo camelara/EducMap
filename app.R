@@ -305,7 +305,9 @@ heatmap_server <- function(id, turismo_df){
     output$heatmap <- renderPlotly({
       hd <- heat_data()  # ya valida si no hay datos
       
-      pal_blue <- as.character(paletteer::paletteer_c("ggthemes::Blue", 30))
+      pal_blue <- grDevices::colorRampPalette(
+        c("#E3F2FD", "#90CAF9", "#1E88E5", "#0D47A1")
+      )(30)
       cs_blue  <- Map(function(i, col) list(i, col),
                       seq(0, 1, length.out = length(pal_blue)),
                       pal_blue)
