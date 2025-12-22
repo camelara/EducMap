@@ -145,7 +145,7 @@ Matriz <- Inversiones_raw %>%
 #   + Se agrega ggthemes::Blue (paletteer)
 # ==========================================================
 custom_palettes <- list(
-  "Standar"= c("#EAEDF5", "#49525E", "#111E60")
+  "Standar"= c("#D4D4D4", "#49525E", "#111E60")
  # "Blue 1" = c("#9EC9D9", "#1F74B1", "#26456E"),
  # "Blue 2" = c("#A0C4F1", "#0067A7", "#00467D"),
  #"Black diverging" = c("#6F6F6F", "#434343", "#1E1E1E"),
@@ -267,7 +267,7 @@ heatmap_server <- function(id, turismo_df){
       item_levels <- if (isTRUE(input$orden_por_frecuencia)) {
         top_items_tbl %>%
           filter(Item %in% items_keep) %>%
-          arrange(desc(total), Item) %>%
+          arrange((total), Item) %>%
           pull(Item)
       } else {
         sort(items_keep)
@@ -456,9 +456,9 @@ ui <- fluidPage(
                  checkboxInput("mostrar_etiquetas", "Mostrar etiquetas en el mapa", value = TRUE),
                  
                  hr(),
-                 h4("Empresas por sector (operando vs invirtiendo)"),
-                 plotlyOutput("bar_empresas_sector", height = "280px"),
-                 helpText("Comparación por sector: Operando (eje Y) vs Invirtiendo (eje X)."),
+                 #h4("Empresas por sector (operando vs invirtiendo)"),
+                 #plotlyOutput("bar_empresas_sector", height = "280px"),
+                 helpText("Fuente: DIPE-MINEC con datos de ONEC y medios de prensa"),
                  
                  hr(),
                  downloadButton("descargar_excel", "Descargar datos (Excel)"),
@@ -591,55 +591,8 @@ server <- function(input, output, session){
     out %>% slice_head(n = 5)
   })
   
-  output$bar_empresas_sector <- renderPlotly({
-    df <- datos_bar_sector()
-    if (is.null(df) || nrow(df) == 0) return(plotly_empty())
-    
-    df <- df %>% mutate(Total = Empresas_operando + Empresas_invirtiendo)
-    
-    x_ref <- median(df$Empresas_invirtiendo, na.rm = TRUE); if (!is.finite(x_ref)) x_ref <- 0
-    y_ref <- median(df$Empresas_operando,   na.rm = TRUE); if (!is.finite(y_ref)) y_ref <- 0
-    
-    x_min <- min(df$Empresas_invirtiendo, na.rm = TRUE); if (!is.finite(x_min)) x_min <- 0
-    x_max <- max(df$Empresas_invirtiendo, na.rm = TRUE); if (!is.finite(x_max)) x_max <- 1
-    y_min <- min(df$Empresas_operando,   na.rm = TRUE); if (!is.finite(y_min)) y_min <- 0
-    y_max <- max(df$Empresas_operando,   na.rm = TRUE); if (!is.finite(y_max)) y_max <- 1
-    
-    plot_ly(
-      df,
-      x = ~Empresas_invirtiendo,
-      y = ~Empresas_operando,
-      type = "scatter",
-      mode = "markers",
-      text = ~Sectores,
-      hovertemplate = paste0(
-        "<b>%{text}</b>",
-        "<br>Empresas operando: %{y:,}",
-        "<br>Empresas invirtiendo: %{x:,}",
-        "<br>Total: %{marker.size:,}<extra></extra>"
-      ),
-      marker = list(
-        sizemode = "area",
-        size = ~Total,
-        sizeref = 2 * max(df$Total, na.rm = TRUE) / (32^2),
-        sizemin = 6,
-        opacity = 0.85,
-        line = list(width = 1)
-      )
-    ) %>%
-      layout(
-        margin = list(l = 10, r = 10, t = 10, b = 30),
-        xaxis = list(title = "Empresas invirtiendo", tickformat = ","),
-        yaxis = list(title = "Empresas operando",   tickformat = ","),
-        showlegend = FALSE,
-        shapes = list(
-          list(type = "line", x0 = x_ref, x1 = x_ref, y0 = y_min, y1 = y_max, xref = "x", yref = "y",
-               line = list(width = 1, dash = "dot")),
-          list(type = "line", x0 = x_min, x1 = x_max, y0 = y_ref, y1 = y_ref, xref = "x", yref = "y",
-               line = list(width = 1, dash = "dot"))
-        )
-      )
-  })
+
+
   
   # ------------------- Agregado para mapa + TOPs -------------------
   datos_mapa <- reactive({
