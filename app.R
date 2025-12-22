@@ -359,10 +359,14 @@ heatmap_server <- function(id, turismo_df){
       datatable(
         df,
         rownames = FALSE,
+        filter = "top",   # <-- activa filtros por columna
         options = list(
           pageLength = 12,
           scrollX = FALSE,
+          autoWidth = TRUE,
+          orderCellsTop = TRUE,
           language = list(
+            search = "Buscar:",
             emptyTable = "Sin registros para los filtros seleccionados",
             zeroRecords = "Sin registros para los filtros seleccionados"
           )
